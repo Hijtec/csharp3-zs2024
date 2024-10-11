@@ -27,13 +27,13 @@ public class ToDoItemsController : ControllerBase
         }
 
         //respond to client
-        return Created(); //201
+        //return Created(); //201
 
         //EXTRA CREDIT
-        // return CreatedAtAction(
-        //     nameof(ReadById),
-        //     new { toDoItemId = item.ToDoItemId },
-        //     ToDoItemGetResponseDto.FromDomain(item)); //201
+        return CreatedAtAction(
+            nameof(ReadById),
+            new { toDoItemId = item.ToDoItemId },
+            ToDoItemGetResponseDto.FromDomain(item)); //201
     }
 
     [HttpGet]
@@ -86,12 +86,12 @@ public class ToDoItemsController : ControllerBase
         try
         {
             //retrieve the item
-            var itemToUpdate = items.Find(i => i.ToDoItemId == toDoItemId);
-            if (itemToUpdate is null)
+            var itemIndexToUpdate = items.FindIndex(i => i.ToDoItemId == toDoItemId);
+            if (itemIndexToUpdate == -1)
             {
                 return NotFound(); //404
             }
-            var itemIndexToUpdate = items.FindIndex(i => i.ToDoItemId == toDoItemId);
+            updatedItem.ToDoItemId = toDoItemId;
             items[itemIndexToUpdate] = updatedItem;
         }
         catch (Exception ex)
